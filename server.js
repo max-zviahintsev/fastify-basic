@@ -1,8 +1,10 @@
 import Fastify from "fastify";
+import fastifyMiddie from "@fastify/middie";
 
 const f = Fastify({
   logger: true,
 });
+await f.register(fastifyMiddie);
 
 const friends = [
   {
@@ -14,6 +16,13 @@ const friends = [
     name: "Newton",
   },
 ];
+
+f.use((req, res, next) => {
+  const start = Date.now();
+  next();
+  const delta = Date.now() - start;
+  console.log(`${req.method} ${req.url} ${delta}ms`);
+});
 
 f.get("/", function (request, reply) {
   reply.send({ hello: "world" });
