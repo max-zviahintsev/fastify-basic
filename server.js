@@ -1,21 +1,19 @@
 import Fastify from "fastify";
 import fastifyMiddie from "@fastify/middie";
+import {
+  getMessages,
+  postMessage,
+} from "./controllers/messages.controller.mjs";
+import {
+  getFriends,
+  getFriend,
+  postFriend,
+} from "./controllers/friends.controller.mjs";
 
 const f = Fastify({
   logger: true,
 });
 await f.register(fastifyMiddie);
-
-const friends = [
-  {
-    id: 0,
-    name: "Einstein",
-  },
-  {
-    id: 1,
-    name: "Newton",
-  },
-];
 
 f.use((req, res, next) => {
   const start = Date.now();
@@ -28,43 +26,12 @@ f.get("/", function (request, reply) {
   reply.send({ hello: "world" });
 });
 
-f.get("/friends", function (request, reply) {
-  reply.send(friends);
-});
+f.get("/friends", getFriends);
+f.get("/friends/:friendId", getFriend);
+f.post("/friends", postFriend);
 
-f.get("/friends/:friendId", function (request, reply) {
-  const friendId = Number(request.params.friendId);
-  const friend = friends[friendId];
-
-  if (friend) {
-    reply.send(friend);
-  } else {
-    reply.statusCode = 404;
-    throw new Error("Invalid friend id");
-  }
-});
-
-f.post("/friends", async function messages(request, reply) {
-  if (!request.body.name) {
-    reply.statusCode = 400;
-    throw new Error("Bad request");
-  }
-
-  const newFriend = {
-    name: request.body.name,
-    id: friends.length,
-  };
-  friends.push(newFriend);
-  reply.send(newFriend);
-});
-
-f.get("/messages", function (request, reply) {
-  reply.send("Hello Albert!");
-});
-
-f.post("/messages", async function messages(request, reply) {
-  return { test: "updating messages" };
-});
+f.get("/messages", getMessages);
+f.post("/messages", postMessage);
 
 try {
   await f.listen({ port: 3000 });
