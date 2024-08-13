@@ -44,6 +44,20 @@ f.get("/friends/:friendId", function (request, reply) {
   }
 });
 
+f.post("/friends", async function messages(request, reply) {
+  if (!request.body.name) {
+    reply.statusCode = 400;
+    throw new Error("Bad request");
+  }
+
+  const newFriend = {
+    name: request.body.name,
+    id: friends.length,
+  };
+  friends.push(newFriend);
+  reply.send(newFriend);
+});
+
 f.get("/messages", function (request, reply) {
   reply.send("Hello Albert!");
 });
