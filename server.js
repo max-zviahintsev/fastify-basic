@@ -5,15 +5,16 @@ const f = Fastify({
 
 await f.register(import("@fastify/middie"));
 
-await f.register(import("./routes/friends.router.mjs"));
-await f.register(import("./routes/messages.router.mjs"));
-
 f.use((req, res, next) => {
   const start = Date.now();
   next();
   const delta = Date.now() - start;
+  console.log(`test`);
   console.log(`${req.method} ${req.url} ${delta}ms`);
 });
+
+await f.register(import("./routes/friends.router.mjs"));
+await f.register(import("./routes/messages.router.mjs"));
 
 try {
   await f.listen({ port: 3000 });
