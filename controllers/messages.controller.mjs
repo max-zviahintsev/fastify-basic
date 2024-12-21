@@ -1,5 +1,5 @@
 function getMessages(request, reply) {
-  reply.sendFile("cat.jpg");
+  reply.sendFile("images/cat.jpg");
 }
 
 function postMessage(request, reply) {

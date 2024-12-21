@@ -16,7 +16,7 @@ f.use((req, res, next) => {
 const dirname = import.meta.dirname;
 await f.register(import("@fastify/static"), {
   root: path.join(dirname, "public"),
-  prefix: "/public/",
+  prefix: "/site/",
   constraints: {},
 });
 
