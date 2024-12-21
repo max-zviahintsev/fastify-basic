@@ -1,8 +1,13 @@
 import Fastify from "fastify";
 import path from "node:path";
+import FastifyVite from "@fastify/vite";
 
 const f = Fastify({
-  logger: true,
+  logger: {
+    transport: {
+      target: "@fastify/one-line-logger",
+    },
+  },
 });
 
 await f.register(import("@fastify/middie"));
@@ -22,6 +27,13 @@ await f.register(import("@fastify/static"), {
 
 await f.register(import("./routes/friends.router.mjs"));
 await f.register(import("./routes/messages.router.mjs"));
+
+await server.register(FastifyVite, {
+  root: import.meta.url,
+  renderer: "@fastify/react",
+});
+
+await server.vite.ready();
 
 try {
   await f.listen({ port: 3000 });
