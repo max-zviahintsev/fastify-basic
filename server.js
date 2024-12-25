@@ -28,12 +28,12 @@ await f.register(import("@fastify/static"), {
 await f.register(import("./routes/friends.router.mjs"));
 await f.register(import("./routes/messages.router.mjs"));
 
-await server.register(FastifyVite, {
+await f.register(FastifyVite, {
   root: import.meta.url,
   renderer: "@fastify/react",
 });
 
-await server.vite.ready();
+await f.vite.ready();
 
 try {
   await f.listen({ port: 3000 });

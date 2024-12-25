@@ -1,6 +1,5 @@
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
-
 import viteReact from "@vitejs/plugin-react";
 import viteFastify from "@fastify/vite/plugin";
 import fastifyReact from "@fastify/react/plugin";
